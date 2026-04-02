@@ -1,0 +1,229 @@
+{
+  "categories": {
+    "anatomy": {
+      "label": "Location",
+      "color": "#7C3AED",
+      "bgColor": "#EDE9FE",
+      "terms": [
+        { "term": "ascending colon", "aliases": ["ascending"] },
+        { "term": "descending colon", "aliases": ["descending"] },
+        { "term": "sigmoid colon", "aliases": ["sigmoid"] },
+        { "term": "transverse colon", "aliases": ["transverse"] },
+        { "term": "cecum", "aliases": [] },
+        { "term": "terminal ileum", "aliases": ["ileum", "TI"] },
+        { "term": "duodenum", "aliases": ["D1", "D2"] },
+        { "term": "esophagus", "aliases": ["esophageal"] },
+        { "term": "gastric antrum", "aliases": ["antrum"] },
+        { "term": "gastric body", "aliases": ["body of stomach"] },
+        { "term": "gastric fundus", "aliases": ["fundus"] },
+        { "term": "rectum", "aliases": ["rectal"] },
+        { "term": "hepatic flexure", "aliases": [] },
+        { "term": "splenic flexure", "aliases": [] },
+        { "term": "ileocecal valve", "aliases": ["ICV"] },
+        { "term": "GE junction", "aliases": ["GEJ", "gastroesophageal junction"] },
+        { "term": "anal canal", "aliases": [] }
+      ]
+    },
+    "finding": {
+      "label": "Finding",
+      "color": "#EA580C",
+      "bgColor": "#FFF7ED",
+      "terms": [
+        { "term": "polyp", "aliases": ["polyps"] },
+        { "term": "ulcer", "aliases": ["ulceration", "ulcerated"] },
+        { "term": "erosion", "aliases": ["erosions", "erosive"] },
+        { "term": "stricture", "aliases": ["narrowing"] },
+        { "term": "mass", "aliases": ["lesion"] },
+        { "term": "diverticulum", "aliases": ["diverticula", "diverticulosis"] },
+        { "term": "nodule", "aliases": ["nodular", "nodularity"] },
+        { "term": "erythema", "aliases": ["erythematous", "redness"] },
+        { "term": "Barrett's esophagus", "aliases": ["Barrett's", "intestinal metaplasia"] },
+        { "term": "hemorrhoid", "aliases": ["hemorrhoids", "hemorrhoidal"] }
+      ]
+    },
+    "morphology": {
+      "label": "Morphology",
+      "color": "#0D9488",
+      "bgColor": "#F0FDFA",
+      "terms": [
+        { "term": "sessile", "aliases": ["0-Is"] },
+        { "term": "pedunculated", "aliases": ["0-Ip"] },
+        { "term": "flat", "aliases": ["0-IIa"] },
+        { "term": "flat elevated", "aliases": ["0-IIa"] },
+        { "term": "depressed", "aliases": ["0-IIc"] },
+        { "term": "semi-pedunculated", "aliases": ["0-Isp"] },
+        { "term": "non-polypoid", "aliases": [] }
+      ]
+    },
+    "size": {
+      "label": "Size",
+      "color": "#2563EB",
+      "bgColor": "#EFF6FF",
+      "terms": [
+        { "term": "3mm", "aliases": ["3 mm"] },
+        { "term": "5mm", "aliases": ["5 mm"] },
+        { "term": "8mm", "aliases": ["8 mm"] },
+        { "term": "10mm", "aliases": ["10 mm", "1cm", "1 cm"] },
+        { "term": "15mm", "aliases": ["15 mm", "1.5cm"] },
+        { "term": "20mm", "aliases": ["20 mm", "2cm", "2 cm"] },
+        { "term": "25mm", "aliases": ["25 mm", "2.5cm"] }
+      ]
+    },
+    "severity": {
+      "label": "Severity",
+      "color": "#DC2626",
+      "bgColor": "#FEF2F2",
+      "terms": [
+        { "term": "mild", "aliases": ["low-grade"] },
+        { "term": "moderate", "aliases": [] },
+        { "term": "severe", "aliases": ["high-grade"] },
+        { "term": "Grade A", "aliases": ["LA Grade A"] },
+        { "term": "Grade B", "aliases": ["LA Grade B"] },
+        { "term": "Grade C", "aliases": ["LA Grade C"] },
+        { "term": "Grade D", "aliases": ["LA Grade D"] }
+      ]
+    },
+    "action": {
+      "label": "Action",
+      "color": "#16A34A",
+      "bgColor": "#F0FDF4",
+      "terms": [
+        { "term": "biopsy taken", "aliases": ["biopsy", "biopsied"] },
+        { "term": "polypectomy", "aliases": [] },
+        { "term": "cold snare", "aliases": ["cold snare polypectomy", "CSP"] },
+        { "term": "hot snare", "aliases": ["hot snare polypectomy", "HSP"] },
+        { "term": "EMR", "aliases": ["endoscopic mucosal resection"] },
+        { "term": "APC", "aliases": ["argon plasma coagulation"] },
+        { "term": "clipping", "aliases": ["clip applied", "hemoclip"] },
+        { "term": "retrieved", "aliases": ["sent to pathology"] }
+      ]
+    },
+    "tissue": {
+      "label": "Tissue Quality",
+      "color": "#CA8A04",
+      "bgColor": "#FEFCE8",
+      "terms": [
+        { "term": "normal mucosa", "aliases": ["unremarkable mucosa", "normal-appearing"] },
+        { "term": "friable", "aliases": ["friability"] },
+        { "term": "granular", "aliases": ["granularity"] },
+        { "term": "edematous", "aliases": ["edema", "swollen"] },
+        { "term": "congested", "aliases": ["congestion"] },
+        { "term": "atrophic", "aliases": ["atrophy"] }
+      ]
+    },
+    "vascular": {
+      "label": "Vascular",
+      "color": "#DB2777",
+      "bgColor": "#FDF2F8",
+      "terms": [
+        { "term": "cherry angioma", "aliases": ["angioma"] },
+        { "term": "AVM", "aliases": ["arteriovenous malformation"] },
+        { "term": "varix", "aliases": ["varices", "variceal"] },
+        { "term": "Dieulafoy", "aliases": ["Dieulafoy lesion"] }
+      ]
+    },
+    "pathology": {
+      "label": "Pathology",
+      "color": "#991B1B",
+      "bgColor": "#FEF2F2",
+      "terms": [
+        { "term": "benign", "aliases": [] },
+        { "term": "malignant", "aliases": ["malignancy"] },
+        { "term": "dysplastic", "aliases": ["dysplasia"] },
+        { "term": "hyperplastic", "aliases": ["hyperplastic polyp"] },
+        { "term": "adenomatous", "aliases": ["adenoma", "tubular adenoma"] },
+        { "term": "serrated", "aliases": ["sessile serrated", "SSA", "SSL"] }
+      ]
+    },
+    "equipment": {
+      "label": "Equipment",
+      "color": "#64748B",
+      "bgColor": "#F8FAFC",
+      "terms": [
+        { "term": "Olympus CF-HQ190", "aliases": ["CF-HQ190"] },
+        { "term": "Olympus GIF-HQ190", "aliases": ["GIF-HQ190"] },
+        { "term": "snare", "aliases": [] },
+        { "term": "forceps", "aliases": ["biopsy forceps"] },
+        { "term": "Boston bowel prep", "aliases": ["BBPS"] }
+      ]
+    },
+    "medication": {
+      "label": "Medication",
+      "color": "#475569",
+      "bgColor": "#F1F5F9",
+      "terms": [
+        { "term": "propofol", "aliases": [] },
+        { "term": "midazolam", "aliases": ["Versed"] },
+        { "term": "fentanyl", "aliases": [] },
+        { "term": "glucagon", "aliases": [] },
+        { "term": "simethicone", "aliases": [] },
+        { "term": "lidocaine spray", "aliases": ["topical lidocaine"] }
+      ]
+    },
+    "indication": {
+      "label": "Indication",
+      "color": "#4338CA",
+      "bgColor": "#EEF2FF",
+      "terms": [
+        { "term": "screening", "aliases": ["screening colonoscopy"] },
+        { "term": "surveillance", "aliases": ["surveillance colonoscopy"] },
+        { "term": "diagnostic", "aliases": [] },
+        { "term": "therapeutic", "aliases": [] },
+        { "term": "follow-up", "aliases": [] },
+        { "term": "iron deficiency anemia", "aliases": ["IDA"] },
+        { "term": "rectal bleeding", "aliases": ["hematochezia", "BRBPR"] },
+        { "term": "abdominal pain", "aliases": [] }
+      ]
+    }
+  },
+  "textBlocks": [
+    {
+      "id": "normal-colon",
+      "label": "Normal Colonoscopy",
+      "template": "The mucosa of the {location} was normal-appearing with no polyps, masses, or other abnormalities identified.",
+      "chips": ["location"]
+    },
+    {
+      "id": "polyp-found",
+      "label": "Polyp Description",
+      "template": "A {size} {morphology} polyp was identified in the {location}. The polyp was removed by {action} and {retrieved}.",
+      "chips": ["size", "morphology", "location", "action"]
+    },
+    {
+      "id": "biopsy-protocol",
+      "label": "Biopsy Protocol",
+      "template": "Biopsies were obtained from the {location} using {equipment}. Specimens were sent to pathology for histological evaluation.",
+      "chips": ["location", "equipment"]
+    },
+    {
+      "id": "ulcer-desc",
+      "label": "Ulcer Description",
+      "template": "A {size} ulcer was noted in the {location} with {tissue} surrounding mucosa. The base appeared {severity}.",
+      "chips": ["size", "location", "tissue", "severity"]
+    },
+    {
+      "id": "ercp-findings",
+      "label": "ERCP Findings",
+      "template": "The {location} was examined and revealed {finding}. Intervention: {action}.",
+      "chips": ["location", "finding", "action"]
+    },
+    {
+      "id": "barrett-protocol",
+      "label": "Barrett's Protocol",
+      "template": "Barrett's esophagus was identified extending {size} above the GE junction. Seattle protocol biopsies were obtained at four quadrants.",
+      "chips": ["size"]
+    },
+    {
+      "id": "complications-none",
+      "label": "No Complications",
+      "template": "There were no immediate complications from the procedure. The patient tolerated the procedure well.",
+      "chips": []
+    },
+    {
+      "id": "hemorrhoid-desc",
+      "label": "Hemorrhoid Description",
+      "template": "Internal hemorrhoids were noted in the {location}, {severity} in grade. No active bleeding observed.",
+      "chips": ["location", "severity"]
+    }
+  ]
+}

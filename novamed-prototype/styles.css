@@ -1,0 +1,516 @@
+/* ===================================
+   NovaMed Editor Prototype
+   Matched to Figma node 2916:56077
+   Font: Noto Sans | ODS / Sense Design System
+   =================================== */
+
+:root {
+  /* Figma design tokens */
+  --surface: #FFFFFF;
+  --bg: #F2F4F8;
+  --panel-bg: #F9FAFC;                    /* color/light/grey/50 */
+  --border: #D6DAE0;
+  --border-light: #F0F0F0;                /* section divider */
+  --border-focus: #99C3F9;                /* active text area border */
+  --border-hover: #B8C4D0;
+
+  /* Text — Figma tokens */
+  --text-title: #27292E;                   /* gray-9 */
+  --text-base: #0F1113;                    /* text/base */
+  --text-body: #27292E;                    /* gray-9 body text */
+  --text-soft: #393F4C;                    /* text/soft (chips) */
+  --text-secondary: #768190;               /* gray-7 */
+  --text-softest: #9DA5B7;                 /* text/softest (placeholder) */
+
+  /* Chips — filled: light blue per Figma */
+  --chip-bg: #E6F0FE;                     /* color/light/blue/100 */
+  --chip-text: #393F4C;                   /* text/soft */
+  --chip-text-label: 14px;                /* label-large/size */
+  --chip-line-h: 20px;                    /* label-large/line-height */
+
+  /* Chips — unfilled: yellow/amber per Andrew */
+  --chip-empty-text: #6D4C00;
+  --chip-empty-bg: #FFDD99;
+  --chip-empty-hover: #FFF7E6;
+  --chip-empty-focus: #FFEB99;
+  --chip-empty-click: #FFCD00;
+  --chip-empty-border: #FFDD99;
+
+  /* AI highlight (typing recognition) */
+  --chip-yellow-bg: #FFF7E6;
+  --chip-yellow-border: #FFDD99;
+
+  /* Success / Review */
+  --success: #198038;
+  --success-bg: #DEFBE6;
+  --success-border: #A7F0BA;
+
+  /* Accent — blue */
+  --accent-container: #E1EDFA;
+  --accent: #3B7DD8;
+
+  /* Tag (finding number) */
+  --tag-bg: #EBEDF1;
+  --tag-text: #768190;
+
+  /* Font */
+  --font: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Chip dimensions (from Chip Specs) */
+  --chip-h: 20px;
+  --chip-r: 4px;
+  --menu-w: 172px;
+  --menu-item-h: 32px;
+
+  /* Radius — from Figma */
+  --r-section: 4px;
+  --r-sm: 2px;
+}
+
+/* === Reset === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text-body);
+  background: var(--bg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === Prototype Shell === */
+
+.proto {
+  max-width: 760px;
+  margin: 48px auto;
+  padding: 0 24px;
+  position: relative;
+}
+
+.progress-bar { height: 2px; background: #E8EBF0; border-radius: 1px; margin-bottom: 20px; }
+.progress-fill { height: 100%; width: 0%; background: var(--border-focus); border-radius: 1px; transition: width 80ms linear; }
+
+.caption { text-align: center; margin-bottom: 16px; min-height: 24px; }
+.caption-text {
+  display: inline-block; font-size: 12px; font-weight: 500; letter-spacing: 0.01em;
+  color: var(--text-secondary); opacity: 0; transform: translateY(3px);
+  transition: all 200ms ease-out;
+}
+.caption-text.show { opacity: 1; transform: translateY(0); }
+
+/* Play overlay */
+.play-overlay {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(242,244,248,0.65); backdrop-filter: blur(4px);
+  border-radius: var(--r-section); cursor: pointer; z-index: 200;
+  transition: opacity 300ms ease-out;
+}
+.play-overlay.hidden { opacity: 0; pointer-events: none; }
+.play-btn {
+  width: 52px; height: 52px; border-radius: 50%; background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(59,125,216,0.3); transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+}
+.play-btn:hover { transform: scale(1.06); box-shadow: 0 6px 24px rgba(59,125,216,0.4); }
+.play-btn svg { width: 20px; height: 20px; fill: #fff; margin-left: 2px; }
+
+/* === Editor Section === */
+
+.editor {
+  background: var(--surface);
+  border: none;
+  border-bottom: 1px solid var(--border-light);
+  border-radius: var(--r-section);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  position: relative;
+  overflow: visible;
+}
+
+/* --- Section Header: "Findings" — 20px SemiBold per Figma --- */
+.ed-header {
+  padding: 20px 24px 32px;
+}
+.ed-title {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 22px;
+  color: var(--text-title);
+  padding: 8px 0;
+  margin: 0;
+}
+
+/* === Finding === */
+
+.finding {
+  margin-bottom: 0;
+  transition: all 200ms ease-out;
+  position: relative;
+  overflow: visible;
+}
+.finding + .finding {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-light);
+}
+
+/* Finding header — tag + title inline */
+.f-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+.f-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 2px;
+  font-family: 'Segoe UI', var(--font);
+}
+.f-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-base);
+  line-height: 1.5;
+}
+
+/* Finding body / text area */
+.f-body {
+  position: relative;
+  overflow: visible;
+  margin-bottom: 8px;
+}
+.f-text {
+  background: var(--panel-bg);
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-body);
+  min-height: 44px;
+  word-wrap: break-word;
+  transition: border-color 150ms ease-out;
+}
+.finding.active .f-text {
+  border-color: var(--border-focus);
+}
+.f-text:empty::before {
+  content: '';
+}
+.f-text .ph {
+  color: var(--text-softest);
+  font-size: 14px;
+  font-weight: 400;
+}
+.f-text .cur {
+  display: inline-block;
+  width: 1.5px; height: 17px;
+  background: var(--text-body);
+  vertical-align: text-bottom;
+  margin-left: 1px;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Review state */
+.finding.review .f-text {
+  border-color: var(--success-border);
+  background: linear-gradient(to bottom, rgba(222,251,230,0.15), var(--panel-bg));
+}
+
+/* === Chips (Figma: label-large, 14px Medium, #E6F0FE bg, 4px radius) === */
+
+.c {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: var(--chip-h);
+  padding: 0 4px;
+  border-radius: var(--chip-r);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: var(--chip-line-h);
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  cursor: pointer;
+  vertical-align: middle;
+  position: relative;
+  transition: all 100ms ease-out;
+  margin: 0 1px;
+}
+.c-arr {
+  font-size: 12px; opacity: 0.55; line-height: 1;
+  display: inline-flex; align-items: center;
+}
+.c-sep {
+  width: 0; height: 16px;
+  border-left: 1px solid rgba(0,0,0,0.12);
+  align-self: center;
+}
+.c-x {
+  font-size: 12px; opacity: 0.4; cursor: pointer; line-height: 1;
+  display: inline-flex; align-items: center;
+}
+.c-x:hover { opacity: 0.7; }
+
+/* Filled chip — light blue per Figma (no border, just bg) */
+.c.fill {
+  color: var(--chip-text);
+  background: var(--chip-bg);
+  border: none;
+}
+.c.fill:hover { background: #D6E6FC; }
+
+/* Unfilled chip — yellow/amber per Andrew's spec */
+.c.empty {
+  color: var(--chip-empty-text);
+  background: var(--chip-empty-bg);
+  border: 1px solid var(--chip-empty-border);
+}
+.c.empty:hover { background: var(--chip-empty-hover); }
+.c.empty:focus { background: var(--chip-empty-focus); }
+.c.empty:active { background: var(--chip-empty-click); border-color: var(--chip-empty-click); }
+
+/* Yellow highlight (pre-chip recognition) */
+.hl {
+  background: var(--chip-yellow-bg);
+  border-bottom: 1.5px solid var(--chip-yellow-border);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* Chip enter animation */
+.c.pop { animation: cpop 220ms ease-out forwards; }
+@keyframes cpop { 0% { opacity: 0; transform: scale(0.85); } 100% { opacity: 1; transform: scale(1); } }
+
+/* === Dropdowns — z-index 9999 === */
+
+.dd {
+  position: absolute;
+  top: 100%;
+  left: 12px;
+  margin-top: 4px;
+  width: var(--menu-w);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-section);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.04);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: all 150ms ease-out;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+.dd.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.dd-item {
+  height: var(--menu-item-h);
+  padding: 0 12px;
+  display: flex; align-items: center;
+  font-size: 14px; color: var(--text-body);
+  cursor: pointer; transition: background 60ms;
+}
+.dd-item:hover, .dd-item.hi { background: var(--chip-bg); }
+.dd-item.hid { display: none; }
+
+/* Slash command menu */
+.sl {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin-top: -4px;
+  width: 264px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.04);
+  z-index: 9999;
+  opacity: 0; transform: translateY(4px); pointer-events: none;
+  transition: all 150ms ease-out;
+  overflow: hidden;
+}
+.sl.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.sl-head {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 11px; font-weight: 600;
+  color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;
+}
+.sl-search {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 14px; color: var(--text-body);
+  font-family: var(--font);
+}
+.sl-item {
+  padding: 8px 12px;
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; transition: background 60ms;
+}
+.sl-item:hover, .sl-item.hi { background: var(--chip-bg); }
+.sl-item.hid { display: none; }
+.sl-icon {
+  width: 24px; height: 24px; border-radius: var(--r-section);
+  background: var(--accent-container);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: var(--accent); flex-shrink: 0;
+}
+.sl-txt { font-size: 14px; font-weight: 500; color: var(--text-body); }
+.sl-desc { font-size: 12px; color: var(--text-secondary); margin-top: 1px; line-height: 1.3; }
+
+/* === AI Suggestion Panel === */
+
+.ai-p {
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-section);
+  background: var(--panel-bg);
+  overflow: hidden;
+  opacity: 0; max-height: 0;
+  transition: all 300ms ease-out;
+}
+.ai-p.vis { opacity: 1; max-height: 320px; }
+.ai-p-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 12px; font-weight: 600; color: var(--text-soft);
+}
+.ai-p-acts { display: flex; gap: 6px; }
+.ai-btn {
+  font-size: 12px; font-weight: 600; padding: 4px 12px;
+  border-radius: var(--r-section); border: none; cursor: pointer;
+  font-family: var(--font);
+  transition: all 100ms ease-out;
+}
+.ai-btn.ok { background: var(--accent); color: #fff; }
+.ai-btn.ok:hover { background: #2D6BC4; }
+.ai-btn.no { background: none; color: var(--text-secondary); border: 1px solid var(--border); }
+.ai-btn.no:hover { border-color: var(--border-hover); color: var(--text-soft); }
+
+.ai-p-body { padding: 4px 12px 8px; }
+.ai-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 5px 0; font-size: 14px;
+  opacity: 0; transform: translateX(-4px);
+}
+.ai-row.vis { opacity: 1; transform: translateX(0); transition: all 200ms ease-out; }
+.ai-row-l { display: flex; align-items: center; gap: 8px; }
+.ai-chk {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center;
+  transition: all 150ms ease-out;
+}
+.ai-chk.ok { background: var(--success); border-color: var(--success); }
+.ai-chk svg { width: 9px; height: 9px; fill: #fff; opacity: 0; transition: opacity 120ms; }
+.ai-chk.ok svg { opacity: 1; }
+.ai-conf { font-size: 12px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.ai-conf.hi { color: var(--success); font-weight: 600; }
+
+/* === Add Finding === */
+
+.add-f {
+  display: flex; align-items: center; gap: 0;
+  padding: 4px 0;
+  border: none; border-radius: 0;
+  background: none; font-size: 14px; font-weight: 400;
+  color: var(--text-softest); cursor: pointer; width: 100%;
+  opacity: 0; transition: all 150ms ease-out;
+  font-family: var(--font);
+  text-align: left;
+  line-height: 22px;
+}
+.add-f.vis { opacity: 1; }
+.add-f:hover { color: var(--text-secondary); }
+.add-f .plus {
+  width: 32px; height: 32px; border-radius: var(--r-section);
+  background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--text-secondary); font-weight: 300;
+  transition: background 150ms;
+  flex-shrink: 0;
+}
+.add-f:hover .plus { background: rgba(0,0,0,0.04); }
+
+/* === Review Banner === */
+
+.rev-ban {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--success-bg);
+  border-radius: var(--r-sm);
+  margin-top: 4px;
+  opacity: 0; max-height: 0; overflow: hidden;
+  transition: all 250ms ease-out;
+}
+.rev-ban.vis { opacity: 1; max-height: 44px; }
+.rev-ban-l {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--success);
+}
+.rev-ban-l svg { width: 14px; height: 14px; }
+.rev-ban-btn {
+  font-size: 12px; font-weight: 600; padding: 4px 12px;
+  border-radius: var(--r-section); border: 1px solid rgba(25,128,56,0.25);
+  background: none; color: var(--success); cursor: pointer;
+  font-family: var(--font);
+  transition: all 100ms;
+}
+.rev-ban-btn:hover { background: rgba(25,128,56,0.08); border-color: rgba(25,128,56,0.4); }
+
+/* === Stats Footnote === */
+
+.stats {
+  margin-top: 20px; padding: 16px 24px;
+  background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r-section);
+  display: flex; align-items: center; justify-content: center; gap: 40px;
+  opacity: 0; transform: translateY(4px);
+  transition: all 300ms ease-out;
+}
+.stats.vis { opacity: 1; transform: translateY(0); }
+.stat { text-align: center; }
+.stat-v { font-size: 20px; font-weight: 700; color: var(--accent); line-height: 1.2; font-variant-numeric: tabular-nums; }
+.stat-l { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
+
+/* === Controls === */
+
+.ctrls {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; margin-top: 20px; padding-bottom: 8px;
+}
+.ctrl {
+  padding: 6px 16px; border: 1px solid var(--border); border-radius: var(--r-section);
+  background: var(--surface); font-size: 12px; font-weight: 500;
+  color: var(--text-secondary); cursor: pointer; transition: all 120ms;
+  font-family: var(--font);
+}
+.ctrl:hover { border-color: var(--accent); color: var(--accent); }
+.ctrl.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Scan line */
+.scan {
+  position: absolute; left: 0; right: 0; bottom: 4px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-focus), transparent);
+  opacity: 0; pointer-events: none;
+}
+.scan.on { animation: sc 2s ease-in-out infinite; }
+@keyframes sc {
+  0% { opacity: 0; transform: translateX(-100%); }
+  25% { opacity: 0.4; } 75% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
