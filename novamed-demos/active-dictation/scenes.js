@@ -92,8 +92,11 @@
     $('statsFootnote').classList.remove('vis');
 
     // Pause button state
-    $('pauseBtn').textContent = 'Pause';
-    $('pauseBtn').classList.remove('on');
+    const pb = $('pauseBtn');
+    const pbIcon = pb.querySelector('.material-symbols-outlined');
+    if (pbIcon) pbIcon.textContent = 'pause';
+    pb.title = 'Pause';
+    pb.classList.remove('on');
 
     // Progress bar
     $('progressFill').style.width = '0%';
@@ -444,6 +447,28 @@
     ];
   }
 
+  // ── Preview: last-frame state ──────────────────────────
+
+  function showPreviewState() {
+    reset();
+    // Filled fields
+    $('locationField').classList.add('ai-populated');
+    $('locationField').querySelector('.nm-field-input').innerHTML =
+      '<span class="nm-field-value"><span class="c fill">Cecum <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span></span>';
+    $('sizeField').classList.add('ai-populated');
+    $('sizeField').querySelector('.nm-field-input').innerHTML =
+      '<span class="nm-field-value"><span class="c fill">5mm <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span></span>';
+    $('morphField').querySelector('.nm-field-input').innerHTML =
+      '<span class="nm-field-value"><span class="c fill">Traditional serrated adenoma <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span></span>';
+    // Narrative filled
+    $('narrativeEditor').innerHTML = esc(NARRATIVE_TEXT);
+    // Review state
+    $('finding1').classList.add('review');
+    $('reviewBanner').classList.add('vis');
+    // Stats
+    $('statsFootnote').classList.add('vis');
+  }
+
   // ── Init ───────────────────────────────────────────────
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -453,6 +478,9 @@
       playEl: $('playOverlay')
     });
     NovaMed.AIIcon.initGlobalClose();
+
+    // Set initial preview state
+    NovaMed.Timeline.setPreview(showPreviewState);
 
     $('playOverlay').addEventListener('click', () => {
       NovaMed.Timeline.run(buildScenes(), DUR, { onReset: reset });
@@ -467,16 +495,20 @@
     });
 
     let paused = false;
-    $('pauseBtn').addEventListener('click', (e) => {
+    const pauseBtn = $('pauseBtn');
+    pauseBtn.addEventListener('click', () => {
       paused = !paused;
+      const icon = pauseBtn.querySelector('.material-symbols-outlined');
       if (paused) {
         NovaMed.Timeline.pause();
-        e.target.textContent = 'Resume';
-        e.target.classList.add('on');
+        if (icon) icon.textContent = 'play_arrow';
+        pauseBtn.title = 'Resume';
+        pauseBtn.classList.add('on');
       } else {
         NovaMed.Timeline.resume();
-        e.target.textContent = 'Pause';
-        e.target.classList.remove('on');
+        if (icon) icon.textContent = 'pause';
+        pauseBtn.title = 'Pause';
+        pauseBtn.classList.remove('on');
       }
     });
   });

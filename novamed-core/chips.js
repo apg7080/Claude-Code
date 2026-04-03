@@ -70,6 +70,31 @@ NovaMed.Chips = (() => {
     return html;
   }
 
+  /**
+   * Build chip text with AI badges before each chip.
+   * Used by ambient voice and similar demos where AI populates findings.
+   * @param {string} text - The clinical text
+   * @param {Array} terms - Array of { term, category, label, confidence }
+   * @param {string} source - AI source label (e.g. 'voice')
+   */
+  function buildAIChipsFromText(text, terms, source) {
+    const pos = [];
+    for (const t of terms) {
+      const i = text.toLowerCase().indexOf(t.term.toLowerCase());
+      if (i !== -1) pos.push({ ...t, s: i, e: i + t.term.length });
+    }
+    pos.sort((a, b) => a.s - b.s);
+    let html = '', last = 0;
+    for (const p of pos) {
+      if (p.s > last) html += esc(text.substring(last, p.s));
+      html += '<span class="ai-badge" data-source="' + esc(source || 'ai') + '" style="margin-right:2px;">AI</span>';
+      html += filledHTML(p.term);
+      last = p.e;
+    }
+    if (last < text.length) html += esc(text.substring(last));
+    return html;
+  }
+
   function buildBlockTemplate(tpl) {
     const parts = tpl.split(/\{(\w+)\}/g);
     let html = '';
@@ -103,7 +128,7 @@ NovaMed.Chips = (() => {
   return {
     filledHTML, unfilledHTML, aiFilledHTML,
     createFilledEl, createUnfilledEl, fillChipEl,
-    buildChipsFromText, buildBlockTemplate,
+    buildChipsFromText, buildAIChipsFromText, buildBlockTemplate,
     createAITermRow, confirmTermRow,
     LABELS, esc
   };

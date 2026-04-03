@@ -78,7 +78,7 @@
 
 /* Finding */
 .finding {
-  margin-bottom: 0; transition: all 200ms ease-out;
+  margin-bottom: 0; transition: all 400ms cubic-bezier(.39, .575, .565, 1);
   position: relative; overflow: visible;
 }
 .finding + .finding {
@@ -113,7 +113,7 @@
   min-height: 44px;
   word-wrap: break-word;
   overflow: hidden;
-  transition: border-color 150ms ease-out;
+  transition: border-color 400ms cubic-bezier(.39, .575, .565, 1);
   position: relative;
 }
 /* Chips must stay inside fields — ellipsis on overflow */
@@ -212,7 +212,7 @@
   border: 1px solid var(--verified-border);
   border-radius: var(--r-sm); margin-top: 4px;
   opacity: 0; max-height: 0; overflow: hidden;
-  transition: all 250ms ease-out;
+  transition: opacity 500ms cubic-bezier(.39, .575, .565, 1), max-height 500ms cubic-bezier(.39, .575, .565, 1);
 }
 .rev-ban.vis { opacity: 1; max-height: 44px; }
 .rev-ban-l {
@@ -237,7 +237,7 @@
   background: var(--panel-bg);
   overflow: hidden;
   opacity: 0; max-height: 0;
-  transition: all 300ms ease-out;
+  transition: opacity 500ms cubic-bezier(.39, .575, .565, 1), max-height 500ms cubic-bezier(.39, .575, .565, 1);
 }
 .ai-p.vis { opacity: 1; max-height: 320px; }
 .ai-p-head {
@@ -263,7 +263,7 @@
   padding: 5px 0; font-size: 14px;
   opacity: 0; transform: translateX(-4px);
 }
-.ai-row.vis { opacity: 1; transform: translateX(0); transition: all 200ms ease-out; }
+.ai-row.vis { opacity: 1; transform: translateX(0); transition: all 400ms cubic-bezier(.39, .575, .565, 1); }
 .ai-row-l { display: flex; align-items: center; gap: 8px; }
 .ai-chk {
   width: 16px; height: 16px; border-radius: 50%;
@@ -286,7 +286,7 @@
   box-shadow: 0 4px 16px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.04);
   z-index: 9999;
   opacity: 0; transform: translateY(-4px); pointer-events: none;
-  transition: opacity 300ms var(--ease-decel, ease-out), transform 300ms var(--ease-decel, ease-out);
+  transition: opacity 400ms cubic-bezier(.39, .575, .565, 1), transform 400ms cubic-bezier(.39, .575, .565, 1);
   max-height: 240px; overflow-y: auto; padding: 4px 0;
 }
 .dd.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
@@ -308,7 +308,7 @@
   box-shadow: 0 4px 16px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.04);
   z-index: 9999;
   opacity: 0; transform: translateY(4px); pointer-events: none;
-  transition: all 150ms ease-out; overflow: hidden;
+  transition: opacity 300ms cubic-bezier(.39, .575, .565, 1), transform 300ms cubic-bezier(.39, .575, .565, 1); overflow: hidden;
 }
 .sl.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
 .sl-head {
@@ -374,7 +374,7 @@
   z-index: 10000;
   opacity: 0; transform: translateY(-4px);
   pointer-events: none;
-  transition: all 150ms ease-out;
+  transition: opacity 400ms cubic-bezier(.39, .575, .565, 1), transform 400ms cubic-bezier(.39, .575, .565, 1);
 }
 .ai-tooltip.open {
   opacity: 1; transform: translateY(0); pointer-events: auto;
@@ -418,7 +418,7 @@
   border: 1px solid var(--border);
   border-radius: var(--r-section);
   font-size: 14px; color: var(--text-body);
-  cursor: pointer; transition: border-color 150ms;
+  cursor: pointer; transition: border-color 400ms cubic-bezier(.39, .575, .565, 1);
   position: relative;
   overflow: hidden;
   max-width: 100%;
@@ -568,7 +568,7 @@
   font-size: 14px; line-height: 1.6;
   color: var(--text-body);
   min-height: 44px;
-  transition: border-color 150ms;
+  transition: border-color 400ms cubic-bezier(.39, .575, .565, 1);
 }
 .single-editor.active .se-text { border-color: var(--border-focus); }
 .se-actions {
@@ -596,7 +596,7 @@
   z-index: 10001;
   opacity: 0;
   transform: translateY(4px);
-  transition: opacity 200ms ease-out, transform 200ms ease-out;
+  transition: opacity 400ms cubic-bezier(.39, .575, .565, 1), transform 400ms cubic-bezier(.39, .575, .565, 1);
   white-space: nowrap;
 }
 .action-indicator.visible {
@@ -646,7 +646,7 @@
   border-radius: var(--r-sm);
   margin-top: 4px;
   opacity: 0; max-height: 0; overflow: hidden;
-  transition: all 250ms ease-out;
+  transition: opacity 500ms cubic-bezier(.39, .575, .565, 1), max-height 500ms cubic-bezier(.39, .575, .565, 1);
 }
 .verified-ban.vis { opacity: 1; max-height: 44px; }
 .verified-ban-l {

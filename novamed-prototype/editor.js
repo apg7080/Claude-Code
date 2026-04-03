@@ -81,13 +81,14 @@ const Editor = (() => {
     document.getElementById(banId)?.classList.add('vis');
   }
 
-  const setProg = p => { el.prog.style.width = p + '%'; };
-  function setCap(t) {
-    el.cap.classList.remove('show');
-    setTimeout(() => { el.cap.textContent = t; if (t) el.cap.classList.add('show'); }, 120);
-  }
-  const hidePlay = () => el.play.classList.add('hidden');
-  const showPlay = () => el.play.classList.remove('hidden');
+  // setProg, setCap, hidePlay, showPlay now handled by NovaMed.Timeline
+  // Keep local stubs for backwards compatibility with Editor.reset()
+  const setProg = p => { if (el.prog) el.prog.style.width = p + '%'; };
+  const setCap = (text) => {
+    if (el.cap) { el.cap.classList.remove('show'); el.cap.innerHTML = ''; }
+  };
+  const hidePlay = () => { if (el.play) el.play.classList.add('hidden'); };
+  const showPlay = () => { if (el.play) el.play.classList.remove('hidden'); };
   const showStats = on => el.stats.classList.toggle('vis', on);
   const showAdd = on => el.addBtn.classList.toggle('vis', on);
 

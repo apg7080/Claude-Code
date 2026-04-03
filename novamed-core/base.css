@@ -40,12 +40,12 @@ body {
   border-top: 1px solid var(--border-light);
 }
 
-/* Progress bar — inside narration layer */
-.progress-bar { height: 2px; background: #E8EBF0; border-radius: 1px; margin-bottom: 16px; }
+/* Progress bar — inside narration layer, centered between UI and captions */
+.progress-bar { height: 2px; background: #E8EBF0; border-radius: 1px; margin-bottom: 24px; }
 .progress-fill { height: 100%; width: 0%; background: var(--border-focus); border-radius: 1px; transition: width 80ms linear; }
 
-/* Scene caption — below UI, supports inline icons from Material Symbols */
-.caption { text-align: center; min-height: 28px; margin-bottom: 4px; }
+/* Scene caption — below progress bar */
+.caption { text-align: center; min-height: 28px; margin-bottom: 8px; }
 .caption-text {
   display: inline-flex;
   align-items: center;
@@ -55,8 +55,8 @@ body {
   letter-spacing: 0.005em;
   color: var(--text-soft);
   opacity: 0;
-  transform: translateY(3px);
-  transition: opacity 400ms var(--ease-decel, ease-out), transform 400ms var(--ease-decel, ease-out);
+  transform: translateY(4px);
+  transition: opacity 500ms cubic-bezier(.39, .575, .565, 1), transform 500ms cubic-bezier(.39, .575, .565, 1);
   line-height: 1.5;
   max-width: 620px;
 }
@@ -89,6 +89,13 @@ body {
   transition: opacity 300ms ease-out;
 }
 .play-overlay.hidden { opacity: 0; pointer-events: none; }
+.play-overlay.show-smooth {
+  animation: fadeInOverlay 500ms cubic-bezier(.39, .575, .565, 1) forwards;
+}
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 .play-btn {
   width: 52px; height: 52px; border-radius: 50%; background: var(--accent);
   display: flex; align-items: center; justify-content: center;
@@ -100,7 +107,7 @@ body {
 /* Controls — part of narration layer */
 .ctrls {
   display: flex; align-items: center; justify-content: center;
-  gap: 8px; margin-top: 12px; padding-bottom: 8px;
+  gap: 6px; margin-top: 12px; padding-bottom: 8px;
 }
 .ctrl {
   padding: 6px 16px; border: 1px solid var(--border); border-radius: var(--r-section);
@@ -111,6 +118,21 @@ body {
 .ctrl:hover { border-color: var(--accent); color: var(--accent); }
 .ctrl.on { background: var(--accent); border-color: var(--accent); color: #fff; }
 .ctrl:disabled { opacity: 0.4; cursor: default; pointer-events: none; }
+
+/* Icon-only control buttons */
+.ctrl-icon {
+  width: 40px; height: 40px; padding: 0;
+  border: 1px solid var(--border); border-radius: 4px;
+  background: var(--surface); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+  transition: all 200ms ease-out;
+  font-family: var(--font);
+}
+.ctrl-icon:hover { border-color: var(--accent); color: var(--accent); }
+.ctrl-icon.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.ctrl-icon:disabled { opacity: 0.4; cursor: default; pointer-events: none; }
+.ctrl-icon .material-symbols-outlined { font-size: 20px; }
 
 /* Step indicator — between prev/next */
 .step-indicator {
@@ -125,8 +147,8 @@ body {
   background: transparent;
   border: none; border-radius: 0;
   display: flex; align-items: center; justify-content: center; gap: 32px;
-  opacity: 0; transform: translateY(4px);
-  transition: all 300ms ease-out;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 600ms cubic-bezier(.39, .575, .565, 1), transform 600ms cubic-bezier(.39, .575, .565, 1);
 }
 .stats.vis { opacity: 1; transform: translateY(0); }
 .stat { text-align: center; }

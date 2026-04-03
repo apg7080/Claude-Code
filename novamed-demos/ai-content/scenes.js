@@ -510,6 +510,33 @@
     ];
   }
 
+  /* ── Preview: last-frame state ── */
+
+  function showPreviewState() {
+    reset();
+    // Findings visible (already default)
+    // Summary section visible + verified
+    const summSec = $('summarySection');
+    summSec.hidden = false;
+    summSec.style.opacity = '1';
+    $('summaryText').textContent = SUMMARY_TEXT;
+    $('summaryAIKey').classList.remove('hidden');
+    $('summaryAIKey').style.opacity = '1';
+    summSec.classList.add('verified');
+
+    // Recs section visible + verified
+    const recsSec = $('recsSection');
+    recsSec.hidden = false;
+    recsSec.style.opacity = '1';
+    $('recsText').textContent = RECS_TEXT;
+    $('recsAIKey').classList.remove('hidden');
+    $('recsAIKey').style.opacity = '1';
+    recsSec.classList.add('verified');
+
+    // Stats
+    $('statsFootnote').classList.add('vis');
+  }
+
   /* ── Init ── */
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -519,6 +546,9 @@
       playEl: $('playOverlay')
     });
     NovaMed.AIIcon.initGlobalClose();
+
+    // Set initial preview state
+    NovaMed.Timeline.setPreview(showPreviewState);
 
     // Close sources panel on outside click
     document.addEventListener('click', (e) => {
@@ -540,16 +570,20 @@
     });
 
     let paused = false;
-    $('pauseBtn').addEventListener('click', (e) => {
+    const pauseBtn = $('pauseBtn');
+    pauseBtn.addEventListener('click', () => {
       paused = !paused;
+      const icon = pauseBtn.querySelector('.material-symbols-outlined');
       if (paused) {
         NovaMed.Timeline.pause();
-        e.target.textContent = 'Resume';
-        e.target.classList.add('on');
+        if (icon) icon.textContent = 'play_arrow';
+        pauseBtn.title = 'Resume';
+        pauseBtn.classList.add('on');
       } else {
         NovaMed.Timeline.resume();
-        e.target.textContent = 'Pause';
-        e.target.classList.remove('on');
+        if (icon) icon.textContent = 'pause';
+        pauseBtn.title = 'Pause';
+        pauseBtn.classList.remove('on');
       }
     });
   });

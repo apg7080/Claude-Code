@@ -54,7 +54,7 @@
   const hide = el => { if (el) el.classList.add('hidden'); };
   const show = el => { if (el) el.classList.remove('hidden'); };
 
-  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const esc = s => NovaMed.Chips.esc(s);
 
   // Action indicator helpers
   function showAction(targetEl, icon, text, variant) {
@@ -76,21 +76,9 @@
     }
   }
 
+  // Use shared chip builders from novamed-core/chips.js
   function buildAIChipText(text, terms) {
-    const pos = [];
-    for (const t of terms) {
-      const i = text.toLowerCase().indexOf(t.term.toLowerCase());
-      if (i !== -1) pos.push({ ...t, s: i, e: i + t.term.length });
-    }
-    pos.sort((a, b) => a.s - b.s);
-    let html = '', last = 0;
-    for (const p of pos) {
-      if (p.s > last) html += esc(text.substring(last, p.s));
-      html += `<span class="ai-badge" data-source="voice" style="margin-right:2px;">AI</span><span class="c fill">${esc(p.term)} <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span>`;
-      last = p.e;
-    }
-    if (last < text.length) html += esc(text.substring(last));
-    return html;
+    return NovaMed.Chips.buildAIChipsFromText(text, terms, 'voice');
   }
 
   function buildPlainChipText(text, terms) {
@@ -174,7 +162,9 @@
     // Reset pause button state
     const pauseBtn = $('pauseBtn');
     if (pauseBtn) {
-      pauseBtn.textContent = 'Pause';
+      const icon = pauseBtn.querySelector('.material-symbols-outlined');
+      if (icon) icon.textContent = 'pause';
+      pauseBtn.title = 'Pause';
       pauseBtn.classList.remove('on');
     }
   }
@@ -530,6 +520,33 @@
     ];
   }
 
+  // Preview: show last-frame state (reviewed findings + stats)
+  function showPreviewState() {
+    reset();
+    // Show editor with both findings in review state
+    const ed = $('editor');
+    show(ed);
+    ed.style.opacity = '1';
+
+    const f1 = $('finding1');
+    const ft1 = $('findingText1');
+    if (f1) { f1.classList.add('review'); }
+    if (ft1) ft1.innerHTML = buildPlainChipText(FINDING1_TEXT, FINDING1_TERMS);
+
+    const f2 = $('finding2');
+    const ft2 = $('findingText2');
+    if (f2) { show(f2); f2.classList.add('review'); f2.style.opacity = '1'; }
+    if (ft2) ft2.innerHTML = buildPlainChipText(FINDING2_TEXT, FINDING2_TERMS);
+
+    const rb1 = $('reviewBanner1');
+    const rb2 = $('reviewBanner2');
+    if (rb1) rb1.classList.add('vis');
+    if (rb2) rb2.classList.add('vis');
+
+    const stats = $('statsFootnote');
+    if (stats) stats.classList.add('vis');
+  }
+
   // Init
   document.addEventListener('DOMContentLoaded', () => {
     NovaMed.Timeline.init({
@@ -538,6 +555,9 @@
       playEl: $('playOverlay')
     });
     NovaMed.AIIcon.initGlobalClose();
+
+    // Set initial preview state
+    NovaMed.Timeline.setPreview(showPreviewState);
 
     const playOverlay = $('playOverlay');
     if (playOverlay) {
@@ -560,16 +580,19 @@
     let paused = false;
     const pauseBtn = $('pauseBtn');
     if (pauseBtn) {
-      pauseBtn.addEventListener('click', (e) => {
+      pauseBtn.addEventListener('click', () => {
         paused = !paused;
+        const icon = pauseBtn.querySelector('.material-symbols-outlined');
         if (paused) {
           NovaMed.Timeline.pause();
-          e.target.textContent = 'Resume';
-          e.target.classList.add('on');
+          if (icon) icon.textContent = 'play_arrow';
+          pauseBtn.title = 'Resume';
+          pauseBtn.classList.add('on');
         } else {
           NovaMed.Timeline.resume();
-          e.target.textContent = 'Pause';
-          e.target.classList.remove('on');
+          if (icon) icon.textContent = 'pause';
+          pauseBtn.title = 'Pause';
+          pauseBtn.classList.remove('on');
         }
       });
     }

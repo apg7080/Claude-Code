@@ -9,9 +9,14 @@ const AIEngine = (() => {
   let flatTerms = []; // { term, category, label, color, bgColor, aliases }
 
   async function loadTerms() {
-    const resp = await fetch('data/terms.json');
-    termsData = await resp.json();
-    buildFlatIndex();
+    try {
+      const resp = await fetch('data/terms.json');
+      termsData = await resp.json();
+      buildFlatIndex();
+    } catch (e) {
+      console.warn('[AIEngine] Could not load terms.json (likely file:// protocol). Using inline fallback.');
+      termsData = { categories: {}, textBlocks: [] };
+    }
   }
 
   function buildFlatIndex() {

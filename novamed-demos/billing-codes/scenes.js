@@ -79,7 +79,9 @@
 
     // Reset pause button state
     const pauseBtn = $('pauseBtn');
-    pauseBtn.textContent = 'Pause';
+    const pbIcon = pauseBtn.querySelector('.material-symbols-outlined');
+    if (pbIcon) pbIcon.textContent = 'pause';
+    pauseBtn.title = 'Pause';
     pauseBtn.classList.remove('on');
 
     // Remove old section and rebuild from scratch
@@ -429,6 +431,42 @@
     ];
   }
 
+  // Preview: last-frame state (populated + verified codes)
+  function showPreviewState() {
+    reset();
+    sectionEl.style.opacity = '1';
+    // Hide empty state, show content
+    const empty = $('billingEmpty');
+    const content = $('billingContent');
+    if (empty) show(empty, false);
+    if (content) { show(content, true); content.style.opacity = '1'; }
+
+    // Populate codes
+    const procList = $('billingProcedureList');
+    const diagList = $('billingDiagnosisList');
+    CPT_CODES.forEach(c => {
+      procList.appendChild(NovaMed.Billing.createCodeRow(c.type, c.code, c.desc, 'ai'));
+    });
+    ICD_CODES.forEach((c, i) => {
+      if (i === CORRECTED_IDX) {
+        diagList.appendChild(NovaMed.Billing.createCodeRow('ICD', CORRECTED_CODE, CORRECTED_DESC, 'ai'));
+      } else {
+        diagList.appendChild(NovaMed.Billing.createCodeRow(c.type, c.code, c.desc, 'ai'));
+      }
+    });
+    diagList.appendChild(NovaMed.Billing.createCodeRow('ICD', MANUAL_CODE, MANUAL_DESC, 'manual'));
+
+    // Show add row
+    const addRow = $('billingAddRow');
+    if (addRow) show(addRow, true);
+
+    // Verified state
+    sectionEl.classList.add('verified-ban');
+
+    // Stats
+    $('statsFootnote').classList.add('vis');
+  }
+
   // Init
   document.addEventListener('DOMContentLoaded', () => {
     // Build initial section
@@ -440,6 +478,9 @@
       capEl: $('sceneCaption'),
       playEl: $('playOverlay')
     });
+
+    // Set initial preview state
+    NovaMed.Timeline.setPreview(showPreviewState);
 
     $('playOverlay').addEventListener('click', () => {
       NovaMed.Timeline.run(buildScenes(), DUR, { onReset: reset });
@@ -454,16 +495,20 @@
     });
 
     let paused = false;
-    $('pauseBtn').addEventListener('click', (e) => {
+    const pauseBtn = $('pauseBtn');
+    pauseBtn.addEventListener('click', () => {
       paused = !paused;
+      const icon = pauseBtn.querySelector('.material-symbols-outlined');
       if (paused) {
         NovaMed.Timeline.pause();
-        e.target.textContent = 'Resume';
-        e.target.classList.add('on');
+        if (icon) icon.textContent = 'play_arrow';
+        pauseBtn.title = 'Resume';
+        pauseBtn.classList.add('on');
       } else {
         NovaMed.Timeline.resume();
-        e.target.textContent = 'Pause';
-        e.target.classList.remove('on');
+        if (icon) icon.textContent = 'pause';
+        pauseBtn.title = 'Pause';
+        pauseBtn.classList.remove('on');
       }
     });
   });

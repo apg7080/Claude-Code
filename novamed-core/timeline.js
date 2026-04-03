@@ -46,10 +46,11 @@ NovaMed.Timeline = (() => {
     // Auto-inject step controls into .ctrls container
     const ctrlsContainer = document.querySelector('.ctrls');
     if (ctrlsContainer) {
-      // Create prev button
+      // Create prev button (icon)
       prevBtn = document.createElement('button');
-      prevBtn.className = 'ctrl';
-      prevBtn.textContent = '← Prev';
+      prevBtn.className = 'ctrl-icon';
+      prevBtn.innerHTML = '<span class="material-symbols-outlined">skip_previous</span>';
+      prevBtn.title = 'Previous step';
       prevBtn.disabled = true;
       prevBtn.addEventListener('click', prevScene);
 
@@ -58,10 +59,11 @@ NovaMed.Timeline = (() => {
       stepEl.className = 'step-indicator';
       stepEl.textContent = '';
 
-      // Create next button
+      // Create next button (icon)
       nextBtn = document.createElement('button');
-      nextBtn.className = 'ctrl';
-      nextBtn.textContent = 'Next →';
+      nextBtn.className = 'ctrl-icon';
+      nextBtn.innerHTML = '<span class="material-symbols-outlined">skip_next</span>';
+      nextBtn.title = 'Next step';
       nextBtn.disabled = true;
       nextBtn.addEventListener('click', nextScene);
 
@@ -108,7 +110,7 @@ NovaMed.Timeline = (() => {
       html += text;
       els.cap.innerHTML = html;
       els.cap.classList.add('show');
-    }, 200);
+    }, 350); // Longer crossfade gap for smoother caption transitions
   }
 
   function hidePlay() {
@@ -116,7 +118,29 @@ NovaMed.Timeline = (() => {
   }
 
   function showPlay() {
-    if (els.play) els.play.classList.remove('hidden');
+    if (els.play) {
+      els.play.classList.remove('hidden');
+      els.play.classList.add('show-smooth');
+      // Clean up animation class after it completes
+      setTimeout(() => {
+        if (els.play) els.play.classList.remove('show-smooth');
+      }, 550);
+    }
+  }
+
+  /**
+   * Show a static placeholder preview (last frame) behind the play overlay.
+   * Call this from each demo's DOMContentLoaded to set the initial visible state.
+   * @param {Function} previewFn - Function that sets up the last-frame preview state
+   */
+  let previewFn = null;
+  function setPreview(fn) {
+    previewFn = fn;
+    if (fn) fn();
+  }
+
+  function showPreview() {
+    if (previewFn) previewFn();
   }
 
   function updateStepDisplay() {
@@ -298,6 +322,11 @@ NovaMed.Timeline = (() => {
       running = false;
       setProg(100);
       updateStepDisplay();
+      // Show preview (last frame) behind play overlay before showing it
+      if (previewFn && onResetFn) {
+        onResetFn();
+        previewFn();
+      }
       showPlay();
       if (onComplete) onComplete();
     }, totalDuration);
@@ -329,6 +358,7 @@ NovaMed.Timeline = (() => {
     init, run, pause, resume, stop,
     sched, setProg, setCap, hidePlay, showPlay,
     isRunning, isPaused,
-    nextScene, prevScene, jumpToScene
+    nextScene, prevScene, jumpToScene,
+    setPreview, showPreview
   };
 })();

@@ -7,138 +7,147 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap">
+  <link rel="stylesheet" href="../novamed-core/tokens.css">
+  <link rel="stylesheet" href="../novamed-core/base.css">
+  <link rel="stylesheet" href="../novamed-core/components.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="proto">
-  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-  <div class="caption"><span class="caption-text" id="sceneCaption"></span></div>
+  <div class="proto-ui">
+    <div class="editor" id="editor">
+      <!-- Section heading: "Findings" — 20px SemiBold per Figma -->
+      <div class="ed-header" id="editorBody">
+        <h2 class="ed-title">Findings</h2>
 
-  <div class="editor" id="editor">
-    <!-- Section heading: "Findings" — 20px SemiBold per Figma -->
-    <div class="ed-header" id="editorBody">
-      <h2 class="ed-title">Findings</h2>
-
-      <!-- Finding 1 -->
-      <div class="finding" id="finding1">
-        <div class="f-head">
-          <span class="f-tag">01</span>
-          <span class="f-title" id="findingTitle1">Finding</span>
-        </div>
-        <div class="f-body" id="findingBody1">
-          <div class="f-text" id="findingText1">
-            <span class="ph">Begin writing or select from Text Blocks...</span>
+        <!-- Finding 1 -->
+        <div class="finding" id="finding1">
+          <div class="f-head">
+            <span class="f-tag">01</span>
+            <span class="f-title" id="findingTitle1">Finding</span>
           </div>
-          <div class="scan" id="scanLine1"></div>
+          <div class="f-body" id="findingBody1">
+            <div class="f-text" id="findingText1">
+              <span class="ph">Begin writing or select from Text Blocks...</span>
+            </div>
+            <div class="scan" id="scanLine1"></div>
 
-          <!-- Slash command menu -->
-          <div class="sl" id="slashMenu">
-            <div class="sl-head">Text Blocks</div>
-            <div class="sl-search" id="slashSearch">/</div>
-            <div class="sl-item hi" data-block="polyp-found">
-              <div class="sl-icon">Tx</div>
-              <div><div class="sl-txt">Polyp Description</div><div class="sl-desc">Size, morphology, location, action</div></div>
-            </div>
-            <div class="sl-item" data-block="biopsy-protocol">
-              <div class="sl-icon">Tx</div>
-              <div><div class="sl-txt">Biopsy Protocol</div><div class="sl-desc">Location and equipment</div></div>
-            </div>
-            <div class="sl-item" data-block="normal-colon">
-              <div class="sl-icon">Tx</div>
-              <div><div class="sl-txt">Normal Colonoscopy</div><div class="sl-desc">Standard normal finding</div></div>
-            </div>
-            <div class="sl-item" data-block="ulcer-desc">
-              <div class="sl-icon">Tx</div>
-              <div><div class="sl-txt">Ulcer Description</div><div class="sl-desc">Size, location, tissue quality</div></div>
-            </div>
-            <div class="sl-item" data-block="barrett-protocol">
-              <div class="sl-icon">Tx</div>
-              <div><div class="sl-txt">Barrett's Protocol</div><div class="sl-desc">Barrett's esophagus</div></div>
-            </div>
-            <div class="sl-item" data-block="complications-none">
-              <div class="sl-icon">Tx</div>
-              <div><div class="sl-txt">No Complications</div><div class="sl-desc">Standard no-complications</div></div>
-            </div>
-          </div>
-
-          <!-- Chip dropdown -->
-          <div class="dd" id="chipDropdown">
-            <div class="dd-item hi">Ascending colon</div>
-            <div class="dd-item">Transverse colon</div>
-            <div class="dd-item">Descending colon</div>
-            <div class="dd-item">Non-terminal ileum</div>
-            <div class="dd-item">Terminal ileum</div>
-            <div class="dd-item">Ileocecal valve</div>
-            <div class="dd-item">Cecum</div>
-            <div class="dd-item">Hepatic flexure</div>
-          </div>
-
-          <!-- AI Panel -->
-          <div class="ai-p" id="aiPanel1">
-            <div class="ai-p-head">
-              <span>Suggested term classifications</span>
-              <div class="ai-p-acts">
-                <button class="ai-btn no">Dismiss</button>
-                <button class="ai-btn ok" id="aiConfirmBtn">Confirm All</button>
+            <!-- Slash command menu -->
+            <div class="sl" id="slashMenu">
+              <div class="sl-head">Text Blocks</div>
+              <div class="sl-search" id="slashSearch">/</div>
+              <div class="sl-item hi" data-block="polyp-found">
+                <div class="sl-icon">Tx</div>
+                <div><div class="sl-txt">Polyp Description</div><div class="sl-desc">Size, morphology, location, action</div></div>
+              </div>
+              <div class="sl-item" data-block="biopsy-protocol">
+                <div class="sl-icon">Tx</div>
+                <div><div class="sl-txt">Biopsy Protocol</div><div class="sl-desc">Location and equipment</div></div>
+              </div>
+              <div class="sl-item" data-block="normal-colon">
+                <div class="sl-icon">Tx</div>
+                <div><div class="sl-txt">Normal Colonoscopy</div><div class="sl-desc">Standard normal finding</div></div>
+              </div>
+              <div class="sl-item" data-block="ulcer-desc">
+                <div class="sl-icon">Tx</div>
+                <div><div class="sl-txt">Ulcer Description</div><div class="sl-desc">Size, location, tissue quality</div></div>
+              </div>
+              <div class="sl-item" data-block="barrett-protocol">
+                <div class="sl-icon">Tx</div>
+                <div><div class="sl-txt">Barrett's Protocol</div><div class="sl-desc">Barrett's esophagus</div></div>
+              </div>
+              <div class="sl-item" data-block="complications-none">
+                <div class="sl-icon">Tx</div>
+                <div><div class="sl-txt">No Complications</div><div class="sl-desc">Standard no-complications</div></div>
               </div>
             </div>
-            <div class="ai-p-body" id="aiPanelBody1"></div>
+
+            <!-- Chip dropdown -->
+            <div class="dd" id="chipDropdown">
+              <div class="dd-item hi">Ascending colon</div>
+              <div class="dd-item">Transverse colon</div>
+              <div class="dd-item">Descending colon</div>
+              <div class="dd-item">Non-terminal ileum</div>
+              <div class="dd-item">Terminal ileum</div>
+              <div class="dd-item">Ileocecal valve</div>
+              <div class="dd-item">Cecum</div>
+              <div class="dd-item">Hepatic flexure</div>
+            </div>
+
+            <!-- AI Panel -->
+            <div class="ai-p" id="aiPanel1">
+              <div class="ai-p-head">
+                <span>Suggested term classifications</span>
+                <div class="ai-p-acts">
+                  <button class="ai-btn no">Dismiss</button>
+                  <button class="ai-btn ok" id="aiConfirmBtn">Confirm All</button>
+                </div>
+              </div>
+              <div class="ai-p-body" id="aiPanelBody1"></div>
+            </div>
+          </div>
+
+          <div class="rev-ban" id="reviewBanner1">
+            <div class="rev-ban-l">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              Section reviewed
+            </div>
+            <button class="rev-ban-btn">Edit</button>
           </div>
         </div>
 
-        <div class="rev-ban" id="reviewBanner1">
-          <div class="rev-ban-l">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-            Section reviewed
+        <!-- Finding 2 -->
+        <div class="finding" id="finding2" style="display:none;">
+          <div class="f-head">
+            <span class="f-tag">02</span>
+            <span class="f-title" id="findingTitle2">Finding</span>
           </div>
-          <button class="rev-ban-btn">Edit</button>
+          <div class="f-body" id="findingBody2">
+            <div class="f-text" id="findingText2">
+              <span class="ph">Begin writing or select from Text Blocks...</span>
+            </div>
+          </div>
         </div>
+
+        <button class="add-f" id="addFindingBtn">
+          <span class="plus">+</span>
+          Add another finding, start typing, or hit "/" to add Text Blocks
+        </button>
       </div>
+    </div>
 
-      <!-- Finding 2 -->
-      <div class="finding" id="finding2" style="display:none;">
-        <div class="f-head">
-          <span class="f-tag">02</span>
-          <span class="f-title" id="findingTitle2">Finding</span>
-        </div>
-        <div class="f-body" id="findingBody2">
-          <div class="f-text" id="findingText2">
-            <span class="ph">Begin writing or select from Text Blocks...</span>
-          </div>
-        </div>
-      </div>
-
-      <button class="add-f" id="addFindingBtn">
-        <span class="plus">+</span>
-        Add another finding, start typing, or hit "/" to add Text Blocks
-      </button>
+    <!-- Play overlay -->
+    <div class="play-overlay" id="playOverlay">
+      <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
     </div>
   </div>
 
-  <!-- Stats footnote -->
-  <div class="stats" id="statsFootnote">
-    <div class="stat"><div class="stat-v" id="statsTerms">8</div><div class="stat-l">terms recognized</div></div>
-    <div class="stat"><div class="stat-v" id="statsCategories">6</div><div class="stat-l">categories</div></div>
-    <div class="stat"><div class="stat-v" id="statsAccuracy">96%</div><div class="stat-l">avg. confidence</div></div>
-    <div class="stat"><div class="stat-v" id="statsTime">47s</div><div class="stat-l">to document</div></div>
-  </div>
+  <div class="proto-narration">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="caption"><span class="caption-text" id="sceneCaption"></span></div>
 
-  <!-- Play overlay -->
-  <div class="play-overlay" id="playOverlay">
-    <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
-  </div>
+    <!-- Stats footnote -->
+    <div class="stats" id="statsFootnote">
+      <div class="stat"><div class="stat-v" id="statsTerms">8</div><div class="stat-l">terms recognized</div></div>
+      <div class="stat"><div class="stat-v" id="statsCategories">6</div><div class="stat-l">categories</div></div>
+      <div class="stat"><div class="stat-v" id="statsAccuracy">96%</div><div class="stat-l">avg. confidence</div></div>
+      <div class="stat"><div class="stat-v" id="statsTime">47s</div><div class="stat-l">to document</div></div>
+    </div>
 
-  <!-- Controls -->
-  <div class="ctrls">
-    <button class="ctrl" id="replayBtn">Replay</button>
-    <button class="ctrl" id="pauseBtn">Pause</button>
+    <!-- Controls -->
+    <div class="ctrls">
+      <button class="ctrl-icon" id="replayBtn" title="Replay"><span class="material-symbols-outlined">replay</span></button>
+      <button class="ctrl-icon" id="pauseBtn" title="Pause"><span class="material-symbols-outlined">pause</span></button>
+    </div>
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script src="../novamed-core/timeline.js"></script>
+<script src="../novamed-core/chips.js"></script>
 <script src="ai-engine.js"></script>
-<script src="chips.js"></script>
 <script src="editor.js"></script>
 <script src="animation.js"></script>
 </body>
