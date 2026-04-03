@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaMed — Ambient Voice Capture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap">
+  <link rel="stylesheet" href="../../novamed-core/tokens.css">
+  <link rel="stylesheet" href="../../novamed-core/base.css">
+  <link rel="stylesheet" href="../../novamed-core/components.css">
+  <style>
+    /* Demo-specific utilities */
+    .hidden { display: none; }
+    .flash-yellow {
+      animation: badge-flash 300ms ease-out;
+    }
+    @keyframes badge-flash {
+      0% { background: #fef08a; }
+      100% { background: transparent; }
+    }
+
+    /* Suggestion tooltip — positioned in proto-ui, not inside chip */
+    .suggestion-tooltip {
+      position: absolute;
+      z-index: 10001;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: var(--ai-tooltip-shadow);
+      padding: 10px 12px;
+      min-width: 180px;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 400ms ease-out, transform 400ms ease-out;
+    }
+    .suggestion-tooltip.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .suggestion-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .suggestion-label strong {
+      color: var(--text-base);
+      font-weight: 600;
+    }
+    .suggestion-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .suggestion-btn {
+      padding: 4px 12px;
+      border-radius: var(--r-section);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 200ms ease-out;
+    }
+    .suggestion-btn.accept {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+    }
+    .suggestion-btn.accept:hover {
+      background: #2D6BC4;
+    }
+    .suggestion-btn.dismiss {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .suggestion-btn.dismiss:hover {
+      border-color: var(--border-hover);
+      color: var(--text-soft);
+    }
+
+    /* Chip highlight for suggestion target */
+    .chip-highlight {
+      outline: 2px solid var(--chip-empty-border);
+      outline-offset: 2px;
+      border-radius: 4px;
+      transition: outline-color 400ms ease-out, outline-offset 400ms ease-out;
+    }
+    .chip-highlight.confirmed {
+      outline-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+<div class="proto">
+
+  <!-- ====== PRODUCT UI ====== -->
+  <div class="proto-ui">
+
+    <!-- Scene 1: Voice Recording Panel -->
+    <div class="voice-panel hidden" id="voicePanel">
+      <div class="voice-panel-header">
+        <div class="voice-recording-indicator">
+          <div class="voice-rec-dot"></div>
+          <span class="voice-rec-label">Recording</span>
+          <span class="voice-rec-time" id="recTime">03:42</span>
+        </div>
+        <div class="voice-waveform recording active" id="waveform">
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+        </div>
+      </div>
+      <div class="voice-transcript" id="transcript"></div>
+    </div>
+
+    <!-- Scene 2: Processing State -->
+    <div class="processing-state hidden" id="processingState">
+      <div class="processing-inner">
+        <div class="processing-spinner"></div>
+        <span class="processing-label">Compiling report from voice transcript...</span>
+      </div>
+    </div>
+
+    <!-- Scene 3-5: Editor (Report) -->
+    <div class="editor hidden" id="editor">
+      <div class="ed-header" id="editorBody">
+        <h2 class="ed-title">Findings</h2>
+
+        <!-- Finding 1 -->
+        <div class="finding" id="finding1">
+          <div class="f-head">
+            <span class="f-tag">01</span>
+            <span class="f-title" id="findingTitle1">Polyp — Ascending Colon</span>
+          </div>
+          <div class="f-body" id="findingBody1">
+            <div class="f-text" id="findingText1"></div>
+          </div>
+          <div class="rev-ban" id="reviewBanner1">
+            <div class="rev-ban-l">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              Physician verified
+            </div>
+            <button class="rev-ban-btn">Edit</button>
+          </div>
+        </div>
+
+        <!-- Finding 2 -->
+        <div class="finding hidden" id="finding2">
+          <div class="f-head">
+            <span class="f-tag">02</span>
+            <span class="f-title" id="findingTitle2">Polyps — Sigmoid Colon</span>
+          </div>
+          <div class="f-body" id="findingBody2">
+            <div class="f-text" id="findingText2"></div>
+          </div>
+          <div class="rev-ban" id="reviewBanner2">
+            <div class="rev-ban-l">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              Physician verified
+            </div>
+            <button class="rev-ban-btn">Edit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action indicator -->
+    <div class="action-indicator" id="actionIndicator"></div>
+
+    <!-- Play overlay (covers only product UI) -->
+    <div class="play-overlay" id="playOverlay">
+      <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+    </div>
+
+  </div><!-- /proto-ui -->
+
+  <!-- ====== NARRATION LAYER (below UI) ====== -->
+  <div class="proto-narration">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="caption"><span class="caption-text" id="sceneCaption"></span></div>
+
+    <!-- Stats — narration metrics, not product UI -->
+    <div class="stats" id="statsFootnote">
+      <div class="stat"><div class="stat-v" id="statsTerms">12</div><div class="stat-l">terms recognized</div></div>
+      <div class="stat"><div class="stat-v" id="statsCategories">8</div><div class="stat-l">categories</div></div>
+      <div class="stat"><div class="stat-v" id="statsAccuracy">94%</div><div class="stat-l">avg. confidence</div></div>
+      <div class="stat"><div class="stat-v" id="statsTime">38s</div><div class="stat-l">to document</div></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="ctrls">
+      <button class="ctrl" id="replayBtn">Replay</button>
+      <button class="ctrl" id="pauseBtn">Pause</button>
+    </div>
+  </div><!-- /proto-narration -->
+
+</div><!-- /proto -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script src="../../novamed-core/timeline.js"></script>
+<script src="../../novamed-core/chips.js"></script>
+<script src="../../novamed-core/ai-icon.js"></script>
+<script src="../../novamed-core/fields.js"></script>
+<script src="../../novamed-core/editor.js"></script>
+<script src="../../novamed-core/voice.js"></script>
+<script src="scenes.js"></script>
+</body>
+</html>

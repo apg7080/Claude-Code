@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaMed — Billing Codes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap">
+  <link rel="stylesheet" href="../../novamed-core/tokens.css">
+  <link rel="stylesheet" href="../../novamed-core/base.css">
+  <link rel="stylesheet" href="../../novamed-core/components.css">
+</head>
+<body>
+
+<div class="proto">
+
+  <!-- ====== PRODUCT UI ====== -->
+  <div class="proto-ui">
+
+    <div id="billingSectionMount"></div>
+
+    <div class="action-indicator" id="actionIndicator"></div>
+
+    <!-- Play overlay (covers only product UI) -->
+    <div class="play-overlay" id="playOverlay">
+      <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+    </div>
+
+  </div><!-- /proto-ui -->
+
+  <!-- ====== NARRATION LAYER (below UI) ====== -->
+  <div class="proto-narration">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="caption"><span class="caption-text" id="sceneCaption"></span></div>
+
+    <!-- Stats -->
+    <div class="stats" id="statsFootnote">
+      <div class="stat"><div class="stat-v" id="statsCodes">7</div><div class="stat-l">codes total</div></div>
+      <div class="stat"><div class="stat-v" id="statsCorrected">1</div><div class="stat-l">corrected</div></div>
+      <div class="stat"><div class="stat-v" id="statsManual">1</div><div class="stat-l">manual</div></div>
+      <div class="stat"><div class="stat-v" id="statsTime">8s</div><div class="stat-l">to generate</div></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="ctrls">
+      <button class="ctrl" id="replayBtn">Replay</button>
+      <button class="ctrl" id="pauseBtn">Pause</button>
+    </div>
+  </div><!-- /proto-narration -->
+
+</div><!-- /proto -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script src="../../novamed-core/timeline.js"></script>
+<script src="../../novamed-core/chips.js"></script>
+<script src="../../novamed-core/ai-icon.js"></script>
+<script src="../../novamed-core/billing.js"></script>
+<script src="scenes.js"></script>
+</body>
+</html>

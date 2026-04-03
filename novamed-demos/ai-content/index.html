@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaMed — AI-Generated Content</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap">
+  <link rel="stylesheet" href="../../novamed-core/tokens.css">
+  <link rel="stylesheet" href="../../novamed-core/base.css">
+  <link rel="stylesheet" href="../../novamed-core/components.css">
+  <style>
+    /* Demo-specific: source transparency panel */
+    .ai-sources-panel {
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      width: 280px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: var(--ai-tooltip-shadow);
+      padding: 12px 14px;
+      z-index: 10000;
+      opacity: 0;
+      transform: translateY(-4px);
+      pointer-events: none;
+      transition: opacity 300ms ease-out, transform 300ms ease-out;
+    }
+    .ai-sources-panel.open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .ai-sources-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+    .ai-source-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 6px 0;
+    }
+    .ai-source-row + .ai-source-row {
+      border-top: 1px solid var(--border-light);
+    }
+    .ai-source-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--r-section);
+      background: var(--accent-container);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .ai-source-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .ai-source-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-base);
+      line-height: 1.3;
+    }
+    .ai-source-desc {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      margin-top: 1px;
+    }
+
+    /* Shimmer lines for loading state */
+    .shimmer-line {
+      height: 14px;
+      border-radius: var(--r-sm);
+      margin-bottom: 8px;
+    }
+    .shimmer-line:last-child {
+      width: 60%;
+      margin-bottom: 0;
+    }
+    .shimmer-line.w-full { width: 100%; }
+    .shimmer-line.w-90 { width: 90%; }
+    .shimmer-line.w-70 { width: 70%; }
+
+    /* Edit highlight flash */
+    .edit-flash {
+      background: #FFF7E6;
+      border-radius: 2px;
+      padding: 0 2px;
+      transition: background 500ms ease-out;
+    }
+    .edit-flash.done {
+      background: transparent;
+    }
+
+    /* Section header layout for ai-key-btn positioning */
+    .se-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .se-header .ed-title {
+      font-size: 18px;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Chips row inside findings */
+    .f-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 8px 0 4px;
+    }
+
+    /* AI key button hidden state */
+    .ai-key-btn.hidden { opacity: 0; }
+  </style>
+</head>
+<body>
+
+<div class="proto">
+
+  <!-- ====== PRODUCT UI ====== -->
+  <div class="proto-ui">
+
+    <!-- Findings Section (pre-populated) -->
+    <div class="editor" id="editor">
+      <div class="ed-header" id="editorBody">
+        <h2 class="ed-title">Findings</h2>
+
+        <!-- Finding 1: Polyp — Ascending Colon -->
+        <div class="finding" id="finding1">
+          <div class="f-head">
+            <span class="f-tag">01</span>
+            <span class="f-title">Polyp — Ascending Colon</span>
+          </div>
+          <div class="f-body" id="findingBody1">
+            <div class="f-content-row">
+              <div class="f-content-main">
+                <div class="f-text" id="findingText1">
+                  <div class="f-chips" id="chips1">
+                    <span class="c fill">ascending colon <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span>
+                    <span class="c fill">8mm <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span>
+                    <span class="c fill">semi-pedunculated <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span>
+                    <span class="c fill">polyp <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span>
+                    <span class="c fill">cold snare <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span>
+                    <span class="c fill">en bloc <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span>
+                  </div>
+                  8mm semi-pedunculated polyp identified in the ascending colon. Removed with cold snare, en bloc. Specimen retrieved and sent to pathology in container 1.
+                </div>
+              </div>
+              <div class="f-content-image" id="imageSlot1"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finding 2: Polyps — Sigmoid Colon -->
+        <div class="finding" id="finding2">
+          <div class="f-head">
+            <span class="f-tag">02</span>
+            <span class="f-title">Polyps — Sigmoid Colon</span>
+          </div>
+          <div class="f-body">
+            <div class="f-text" id="findingText2">
+              <div class="f-chips" id="chips2">
+                <span class="c fill">sigmoid colon <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span>
+                <span class="c fill">3mm <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span>
+                <span class="c fill">hyperplastic <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span>
+                <span class="c fill">cold snare <span class="c-arr">&#9662;</span><span class="c-sep"></span><span class="c-x">&times;</span></span>
+              </div>
+              3mm hyperplastic polyp in the sigmoid colon. Removed with cold snare, en bloc. Specimen sent to pathology in container 2.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Section (single-editor, starts hidden) -->
+    <div class="single-editor" id="summarySection" hidden>
+      <div class="se-header section-header">
+        <h2 class="ed-title">Summary</h2>
+        <button class="ai-key-btn hidden" id="summaryAIKey">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          AI Sources
+        </button>
+        <!-- Source transparency panel -->
+        <div class="ai-sources-panel" id="sourcesPanel">
+          <div class="ai-sources-title">Contributing Sources</div>
+          <div class="ai-source-row">
+            <div class="ai-source-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+            </div>
+            <div class="ai-source-info">
+              <div class="ai-source-name">EndoVoice Scribe</div>
+              <div class="ai-source-desc">Transcript from ambient capture</div>
+            </div>
+          </div>
+          <div class="ai-source-row">
+            <div class="ai-source-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="8" cy="8" r="2"/><path d="M22 14l-6-6L4 20"/></svg>
+            </div>
+            <div class="ai-source-info">
+              <div class="ai-source-name">Odin Vision CAD</div>
+              <div class="ai-source-desc">Computer-aided detection imagery</div>
+            </div>
+          </div>
+          <div class="ai-source-row">
+            <div class="ai-source-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M9 3v18"/><path d="M3 9h18"/></svg>
+            </div>
+            <div class="ai-source-info">
+              <div class="ai-source-name">Structured Fields</div>
+              <div class="ai-source-desc">Finding chips and coded data</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="se-text" id="summaryText"></div>
+    </div>
+
+    <!-- Recommendations Section (single-editor, starts hidden) -->
+    <div class="single-editor" id="recsSection" hidden>
+      <div class="se-header section-header">
+        <h2 class="ed-title">Recommendations</h2>
+        <button class="ai-key-btn hidden" id="recsAIKey">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          AI Sources
+        </button>
+      </div>
+      <div class="se-text" id="recsText"></div>
+    </div>
+
+    <!-- Action indicator -->
+    <div class="action-indicator" id="actionIndicator"></div>
+
+    <!-- Play overlay -->
+    <div class="play-overlay" id="playOverlay">
+      <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+    </div>
+
+  </div><!-- /proto-ui -->
+
+  <!-- ====== NARRATION LAYER ====== -->
+  <div class="proto-narration">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="caption"><span class="caption-text" id="sceneCaption"></span></div>
+
+    <div class="stats" id="statsFootnote">
+      <div class="stat"><div class="stat-v">3</div><div class="stat-l">sections generated</div></div>
+      <div class="stat"><div class="stat-v">3</div><div class="stat-l">input sources</div></div>
+      <div class="stat"><div class="stat-v">96%</div><div class="stat-l">confidence</div></div>
+      <div class="stat"><div class="stat-v">12s</div><div class="stat-l">to generate</div></div>
+    </div>
+
+    <div class="ctrls">
+      <button class="ctrl" id="replayBtn">Replay</button>
+      <button class="ctrl" id="pauseBtn">Pause</button>
+    </div>
+  </div><!-- /proto-narration -->
+
+</div><!-- /proto -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script src="../../novamed-core/timeline.js"></script>
+<script src="../../novamed-core/chips.js"></script>
+<script src="../../novamed-core/ai-icon.js"></script>
+<script src="../../novamed-core/images.js"></script>
+<script src="scenes.js"></script>
+</body>
+</html>

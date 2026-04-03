@@ -1,0 +1,102 @@
+/* ===================================
+   NovaMed Design System Tokens
+   Source: Figma node 2916:56077
+   ODS / Sense Design System
+
+   Blue + amber primary. Purple (#4A4459) reserved
+   for physician-verified / human-in-the-loop states.
+   =================================== */
+
+:root {
+  /* Surface & Background */
+  --surface: #FFFFFF;
+  --bg: #F2F4F8;
+  --panel-bg: #F9FAFC;                    /* color/light/grey/50 */
+
+  /* Borders */
+  --border: #D6DAE0;
+  --border-light: #F0F0F0;                /* section divider */
+  --border-focus: #99C3F9;                /* active text area border */
+  --border-hover: #B8C4D0;
+
+  /* Text */
+  --text-title: #27292E;                   /* gray-9 */
+  --text-base: #0F1113;                    /* text/base */
+  --text-body: #27292E;                    /* gray-9 body text */
+  --text-soft: #393F4C;                    /* text/soft (chips) */
+  --text-secondary: #768190;               /* gray-7 */
+  --text-softest: #9DA5B7;                 /* text/softest (placeholder) */
+
+  /* Chips — filled: light blue */
+  --chip-bg: #E6F0FE;                     /* color/light/blue/100 */
+  --chip-text: #393F4C;                   /* text/soft */
+  --chip-text-label: 14px;                /* label-large/size */
+  --chip-line-h: 20px;                    /* label-large/line-height */
+
+  /* Chips — unfilled: yellow/amber */
+  --chip-empty-text: #6D4C00;
+  --chip-empty-bg: #FFDD99;
+  --chip-empty-hover: #FFF7E6;
+  --chip-empty-focus: #FFEB99;
+  --chip-empty-click: #FFCD00;
+  --chip-empty-border: #FFDD99;
+
+  /* AI highlight (typing recognition) */
+  --chip-yellow-bg: #FFF7E6;
+  --chip-yellow-border: #FFDD99;
+
+  /* Success */
+  --success: #198038;
+  --success-bg: #DEFBE6;
+  --success-border: #A7F0BA;
+
+  /* Verified — physician approved (human-in-the-loop) */
+  --verified: #4A4459;
+  --verified-bg: rgba(74, 68, 89, 0.08);
+  --verified-border: rgba(74, 68, 89, 0.25);
+  --verified-light: rgba(74, 68, 89, 0.12);
+
+  /* Accent — blue */
+  --accent: #3B7DD8;
+  --accent-container: #E1EDFA;
+
+  /* Tag (finding number) */
+  --tag-bg: #EBEDF1;
+  --tag-text: #768190;
+
+  /* AI Icon */
+  --ai-badge-bg: #E1EDFA;
+  --ai-badge-text: #3B7DD8;
+  --ai-badge-hover-bg: #D0E0F7;
+  --ai-tooltip-bg: var(--surface);
+  --ai-tooltip-border: var(--border);
+  --ai-tooltip-shadow: 0 4px 16px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.04);
+
+  /* Voice */
+  --voice-active: #3B7DD8;
+  --voice-bar-bg: #99C3F9;
+  --voice-recording: #2B5797;                /* dark blue — not red */
+
+  /* Billing */
+  --billing-code-bg: #F4F6FA;
+  --billing-code-active-border: #7F8696;
+
+  /* Font */
+  --font: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Dimensions */
+  --chip-h: 20px;
+  --chip-r: 4px;
+  --menu-w: 172px;
+  --menu-item-h: 32px;
+
+  /* Radius */
+  --r-section: 4px;
+  --r-sm: 2px;
+
+  /* Easings — from design intelligence teardowns */
+  --ease-decel: cubic-bezier(.4, 0, .1, 1);        /* snappy start, smooth stop */
+  --ease-position: cubic-bezier(.32, .94, .6, 1);   /* organic repositioning */
+  --ease-out: cubic-bezier(0, 0, .58, 1);           /* clean standard ease-out */
+  --ease-entrance: cubic-bezier(.39, .575, .565, 1); /* section reveals */
+}
