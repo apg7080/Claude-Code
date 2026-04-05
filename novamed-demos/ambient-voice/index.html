@@ -12,85 +12,74 @@
   <link rel="stylesheet" href="../../novamed-core/base.css">
   <link rel="stylesheet" href="../../novamed-core/components.css">
   <style>
-    /* Demo-specific utilities */
     .hidden { display: none; }
-    .flash-yellow {
-      animation: badge-flash 300ms ease-out;
+
+    /* Voice recording bar — sits inside the editor header, like active-dictation's voice-header */
+    .voice-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 0 12px;
     }
-    @keyframes badge-flash {
-      0% { background: #fef08a; }
-      100% { background: transparent; }
+    .voice-header-left {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .voice-status {
+      font-size: 12px; font-weight: 600;
+      color: var(--text-secondary);
+      transition: color 500ms ease-out;
+    }
+    .voice-status.active { color: var(--voice-recording); }
+
+    /* Transcript area — uses same .se-text pattern as single-editor sections */
+    .transcript-area {
+      background: var(--panel-bg);
+      border: 1px solid transparent;
+      border-radius: var(--r-sm);
+      padding: 12px;
+      font-size: 14px; line-height: 1.7;
+      color: var(--text-secondary);
+      min-height: 72px;
+      font-style: italic;
+      letter-spacing: 0.005em;
+      overflow: hidden;
+      transition: border-color 400ms cubic-bezier(.39, .575, .565, 1);
+    }
+    .transcript-area.recording { border-color: var(--border-focus); }
+
+    /* Processing overlay inside the editor */
+    .processing-overlay {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; padding: 48px 24px;
     }
 
-    /* Suggestion tooltip — positioned in proto-ui, not inside chip */
+    /* Suggestion tooltip */
     .suggestion-tooltip {
-      position: absolute;
-      z-index: 10001;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      box-shadow: var(--ai-tooltip-shadow);
-      padding: 10px 12px;
-      min-width: 180px;
-      opacity: 0;
-      transform: translateY(4px);
+      position: absolute; z-index: 10001;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; box-shadow: var(--ai-tooltip-shadow);
+      padding: 10px 12px; min-width: 180px;
+      opacity: 0; transform: translateY(4px);
       transition: opacity 400ms ease-out, transform 400ms ease-out;
     }
-    .suggestion-tooltip.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .suggestion-label {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
-      line-height: 1.4;
-    }
-    .suggestion-label strong {
-      color: var(--text-base);
-      font-weight: 600;
-    }
-    .suggestion-actions {
-      display: flex;
-      gap: 6px;
-    }
+    .suggestion-tooltip.show { opacity: 1; transform: translateY(0); }
+    .suggestion-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.4; }
+    .suggestion-label strong { color: var(--text-base); font-weight: 600; }
+    .suggestion-actions { display: flex; gap: 6px; }
     .suggestion-btn {
-      padding: 4px 12px;
-      border-radius: var(--r-section);
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: var(--font);
-      transition: all 200ms ease-out;
+      padding: 4px 12px; border-radius: var(--r-section);
+      font-size: 11px; font-weight: 600; cursor: pointer;
+      font-family: var(--font); transition: all 300ms ease-out;
     }
-    .suggestion-btn.accept {
-      background: var(--accent);
-      color: #fff;
-      border: 1px solid var(--accent);
-    }
-    .suggestion-btn.accept:hover {
-      background: #2D6BC4;
-    }
-    .suggestion-btn.dismiss {
-      background: transparent;
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
-    }
-    .suggestion-btn.dismiss:hover {
-      border-color: var(--border-hover);
-      color: var(--text-soft);
-    }
+    .suggestion-btn.accept { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .suggestion-btn.accept:hover { background: #2D6BC4; }
+    .suggestion-btn.dismiss { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+    .suggestion-btn.dismiss:hover { border-color: var(--border-hover); color: var(--text-soft); }
 
-    /* Chip highlight for suggestion target */
-    .chip-highlight {
-      outline: 2px solid var(--chip-empty-border);
-      outline-offset: 2px;
-      border-radius: 4px;
-      transition: outline-color 400ms ease-out, outline-offset 400ms ease-out;
-    }
-    .chip-highlight.confirmed {
-      outline-color: var(--accent);
-    }
+    /* Chip highlight for suggestion */
+    .chip-highlight { outline: 2px solid var(--chip-empty-border); outline-offset: 2px; border-radius: 4px; transition: outline-color 400ms ease-out; }
+    .chip-highlight.confirmed { outline-color: var(--accent); }
+
+    .flash-yellow { animation: badge-flash 500ms ease-out; }
+    @keyframes badge-flash { 0% { background: #fef08a; } 100% { background: transparent; } }
   </style>
 </head>
 <body>
@@ -100,42 +89,50 @@
   <!-- ====== PRODUCT UI ====== -->
   <div class="proto-ui">
 
-    <!-- Scene 1: Voice Recording Panel -->
-    <div class="voice-panel hidden" id="voicePanel">
-      <div class="voice-panel-header">
-        <div class="voice-recording-indicator">
-          <div class="voice-rec-dot"></div>
-          <span class="voice-rec-label">Recording</span>
-          <span class="voice-rec-time" id="recTime">03:42</span>
-        </div>
-        <div class="voice-waveform recording active" id="waveform">
-          <div class="voice-bar"></div>
-          <div class="voice-bar"></div>
-          <div class="voice-bar"></div>
-          <div class="voice-bar"></div>
-          <div class="voice-bar"></div>
-          <div class="voice-bar"></div>
-          <div class="voice-bar"></div>
-        </div>
-      </div>
-      <div class="voice-transcript" id="transcript"></div>
-    </div>
-
-    <!-- Scene 2: Processing State -->
-    <div class="processing-state hidden" id="processingState">
-      <div class="processing-inner">
-        <div class="processing-spinner"></div>
-        <span class="processing-label">Compiling report from voice transcript...</span>
-      </div>
-    </div>
-
-    <!-- Scene 3-5: Editor (Report) -->
-    <div class="editor hidden" id="editor">
+    <!-- Single editor card — same as active-dictation/ai-content -->
+    <div class="editor" id="editor">
       <div class="ed-header" id="editorBody">
         <h2 class="ed-title">Findings</h2>
 
+        <!-- Voice recording header — same pattern as active-dictation -->
+        <div class="voice-header" id="voiceHeader">
+          <div class="voice-header-left">
+            <button class="voice-mic-btn active" id="micBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+              </svg>
+            </button>
+            <div class="voice-waveform" id="waveform">
+              <div class="voice-bar"></div>
+              <div class="voice-bar"></div>
+              <div class="voice-bar"></div>
+              <div class="voice-bar"></div>
+              <div class="voice-bar"></div>
+              <div class="voice-bar"></div>
+              <div class="voice-bar"></div>
+            </div>
+            <span class="voice-status" id="voiceStatus">Ambient recording</span>
+            <span class="voice-rec-time" id="recTime" style="font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums;">03:42</span>
+          </div>
+        </div>
+
+        <!-- Transcript — displayed in a field-like area during recording -->
+        <div class="transcript-area" id="transcriptArea">
+          <span class="ph" id="transcriptPlaceholder">Listening for voice input...</span>
+          <span id="transcript"></span>
+        </div>
+
+        <!-- Processing state (hidden, shows inside editor) -->
+        <div class="processing-overlay hidden" id="processingState">
+          <div class="processing-spinner"></div>
+          <span class="processing-label">Compiling report from voice transcript...</span>
+        </div>
+
         <!-- Finding 1 -->
-        <div class="finding" id="finding1">
+        <div class="finding hidden" id="finding1">
           <div class="f-head">
             <span class="f-tag">01</span>
             <span class="f-title" id="findingTitle1">Polyp — Ascending Colon</span>
@@ -175,19 +172,18 @@
     <!-- Action indicator -->
     <div class="action-indicator" id="actionIndicator"></div>
 
-    <!-- Play overlay (covers only product UI) -->
+    <!-- Play overlay -->
     <div class="play-overlay" id="playOverlay">
       <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
     </div>
 
   </div><!-- /proto-ui -->
 
-  <!-- ====== NARRATION LAYER (below UI) ====== -->
+  <!-- ====== NARRATION LAYER ====== -->
   <div class="proto-narration">
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     <div class="caption"><span class="caption-text" id="sceneCaption"></span></div>
 
-    <!-- Stats — narration metrics, not product UI -->
     <div class="stats" id="statsFootnote">
       <div class="stat"><div class="stat-v" id="statsTerms">12</div><div class="stat-l">terms recognized</div></div>
       <div class="stat"><div class="stat-v" id="statsCategories">8</div><div class="stat-l">categories</div></div>
@@ -195,7 +191,6 @@
       <div class="stat"><div class="stat-v" id="statsTime">38s</div><div class="stat-l">to document</div></div>
     </div>
 
-    <!-- Controls -->
     <div class="ctrls">
       <button class="ctrl-icon" id="replayBtn" title="Replay"><span class="material-symbols-outlined">replay</span></button>
       <button class="ctrl-icon" id="pauseBtn" title="Pause"><span class="material-symbols-outlined">pause</span></button>
