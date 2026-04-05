@@ -94,7 +94,7 @@
   background: var(--tag-bg); color: var(--tag-text);
   font-size: 12px; font-weight: 600; line-height: 20px;
   height: 24px; padding: 0 8px; border-radius: 2px;
-  font-family: 'Segoe UI', var(--font);
+  font-family: var(--font);
 }
 .f-title {
   font-size: 16px; font-weight: 600; color: var(--text-base); line-height: 1.5;

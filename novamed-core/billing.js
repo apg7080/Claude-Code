@@ -22,6 +22,9 @@ NovaMed.Billing = (() => {
         border-radius: var(--r-section);
         box-shadow: 0 1px 2px rgba(0,0,0,0.04);
         padding: 20px 24px 16px;
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 200px;
       }
       .billing-title {
         font-size: 20px; font-weight: 600; line-height: 22px;
@@ -50,6 +53,8 @@ NovaMed.Billing = (() => {
         transition: all 200ms ease-out;
         cursor: pointer;
         min-height: 40px;
+        width: 100%;
+        box-sizing: border-box;
       }
       .billing-row:hover {
         background: var(--billing-code-bg);
@@ -69,7 +74,7 @@ NovaMed.Billing = (() => {
         background: var(--tag-bg); color: var(--tag-text);
         font-size: 12px; font-weight: 600; line-height: 20px;
         height: 24px; padding: 0 8px; border-radius: 2px;
-        font-family: 'Segoe UI', var(--font);
+        font-family: var(--font);
         flex-shrink: 0;
         letter-spacing: 0.02em;
       }
