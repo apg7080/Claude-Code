@@ -402,8 +402,8 @@
           // Action indicator for verification
           showAction(sectionEl, 'verified_user', 'Physician approves', 'physician-action');
 
-          // Add verified-ban class to the section
-          sectionEl.classList.add('verified-ban');
+          // Mark the section as verified (state flag, not the banner element class)
+          sectionEl.classList.add('is-verified');
 
           // Subtle completion pulse
           anime({
@@ -461,7 +461,7 @@
     if (addRow) show(addRow, true);
 
     // Verified state
-    sectionEl.classList.add('verified-ban');
+    sectionEl.classList.add('is-verified');
 
     // Stats
     $('statsFootnote').classList.add('vis');
